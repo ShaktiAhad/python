@@ -1,5 +1,5 @@
 {
-  "posts: [
+  "posts": [
           {"id":1, "Name":"A"}
           {"id":2, "Name":"B"}
           {"id":3, "Name":"C"}
