@@ -5,8 +5,9 @@
     { "id": 3, "title": "C" }
   ],
   "comments": [
-    { "id": 1, "body": "Comment's of A", "postId": 1 },
-    { "id": 2, "body": "Comment's of B", "postId": 1 }
+    { "id": 1, "body": "Comment's of 1", "postId": 1 },
+    { "id": 2, "body": "Comment's of 2", "postId": 2 },
+    { "id": 3, "body": "Comment's of 3", "postId": 3 }
   ],
   "profile": {
     "name": "ABC"
