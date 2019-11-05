@@ -37,5 +37,3 @@ def init_app(app):
         eg.createEventType(eventtypes)
         eg.createFunction(functions)
         eg.createSubscription(subscriptions)
-        pprint(eg.getAllFunction())
-        pprint(eg.getAllSubscription())
