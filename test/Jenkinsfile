@@ -1,0 +1,62 @@
+pipeline {
+    agent {
+      node {
+        label 'nodejs'
+      }
+    }
+    environment {
+        DEV_PROJECT = "python-helloworld"
+        APP_NAME = "python-helloworld"
+        APP_GIT_URL = "https://github.com/ShaktiAhad/python.git"
+        CONTEXT_DIR = "test"
+    }
+    stages {
+        stage('Launch new app in DEV env') {
+                steps {
+                    echo '### Creating ${DEV_PROJECT} project ###'
+                    sh '''
+                            oc project ${DEV_PROJECT}
+                            sleep 5
+                    '''
+
+                    echo '### Creating ${APP_NAME} app###'
+                    sh '''
+                            oc project ${DEV_PROJECT}
+                            oc new-app --name python-helloworld python:latest ${APP_GIT_URL} --context-dir ${CONTEXT_DIR}
+                            oc expose svc/${APP_NAME}
+                    '''
+                }
+            }
+        stage('Wait for S2I build to complete') {
+                steps {
+                    script {
+                        openshift.withCluster() {
+                            openshift.withProject( "${DEV_PROJECT}" ) {
+                                def bc = openshift.selector("bc", "${APP_NAME}")
+                                bc.logs('-f')
+                                def builds = bc.related('builds')
+                                builds.untilEach(1) {
+                                    return (it.object().status.phase == "Complete")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        stage('Wait for deployment in DEV env') {
+            steps {
+                script {
+                    openshift.withCluster() {
+                        openshift.withProject( "${DEV_PROJECT}" ) {
+                            def deployment = openshift.selector("dc", "${APP_NAME}").rollout()
+                            openshift.selector("dc", "${APP_NAME}").related('pods').untilEach(1) {
+                                return (it.object().status.phase == "Running")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
