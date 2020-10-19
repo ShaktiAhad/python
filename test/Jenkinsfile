@@ -22,7 +22,7 @@ pipeline {
                     echo '### Creating ${APP_NAME} app###'
                     sh '''
                             oc project ${DEV_PROJECT}
-                            oc new-app --name python-helloworld python:latest ${APP_GIT_URL} --context-dir ${CONTEXT_DIR}
+                            oc new-app --name ${APP_NAME} python:latest ${APP_GIT_URL} --context-dir ${CONTEXT_DIR}
                             oc expose svc/${APP_NAME}
                     '''
                 }
