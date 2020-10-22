@@ -16,6 +16,7 @@ pipeline {
                     echo '### Creating ${DEV_PROJECT} project ###'
                     sh '''
                             oc project ${DEV_PROJECT}
+                            oc delete all -l app=${APP_NAME}
                             sleep 5
                     '''
 
