@@ -5,8 +5,8 @@ pipeline {
       }
     }
     environment {
-        DEV_PROJECT = "shakti-pythonhello"
-        APP_NAME = "python-helloworld"
+        DEV_PROJECT = "python-app"
+        APP_NAME = "python-hello"
         APP_GIT_URL = "https://github.com/ShaktiAhad/python.git"
         CONTEXT_DIR = "test"
     }
